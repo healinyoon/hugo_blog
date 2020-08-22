@@ -115,9 +115,9 @@ params:
       enabled: true
       width: 40
       height: 40
-      url: 
+      url: favicon.ico
     title: rin gu 
-    favicon: 
+    favicon: favicon.ico
     board: <p></p> 
 
   # Share
