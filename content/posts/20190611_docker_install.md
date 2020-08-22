@@ -1,7 +1,7 @@
 ---
 title: "Docker 설치하기(CentOS)"
 date: 2019-06-01 10:00:00 + 0000
-draft: true
+draft: false
 tags: [
     "docker",
 ]
