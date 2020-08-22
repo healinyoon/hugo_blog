@@ -1,5 +1,5 @@
 baseURL: http://healinyoon.github.io/
-theme: hugo-theme-pure
+theme: pure
 title: healinyoon blog
 defaultContentLanguage: en  # en/zh/...
 footnoteReturnLinkContents: ↩
