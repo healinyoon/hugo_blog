@@ -112,7 +112,7 @@ params:
   # Site
   site:
     logo:
-      enabled: false
+      enabled: true
       width: 40
       height: 40
       url: favicon.ico
