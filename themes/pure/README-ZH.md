@@ -89,9 +89,9 @@ menuIcons:
 
 ```yml
 site:
-	favicon: favicon.png
+	favicon: favicon.ico
 profile:
-	avatar: avatar.png
+	avatar: avatar.ico
 ```
 
 ## TOC
