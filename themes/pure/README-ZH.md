@@ -91,7 +91,7 @@ menuIcons:
 site:
 	favicon: favicon.ico
 profile:
-	avatar: avatar.ico
+	avatar: avatar.png
 ```
 
 ## TOC

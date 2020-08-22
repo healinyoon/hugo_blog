@@ -112,12 +112,12 @@ params:
   # Site
   site:
     logo:
-      enabled: true
+      enabled: false
       width: 40
       height: 40
-      url: favicon.ico
+      url: ''
     title: rin gu # 页面title
-    favicon: favicon.ico
+    favicon: ''
     board: <p></p> # 公告牌
 
   # Share
