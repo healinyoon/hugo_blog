@@ -89,7 +89,7 @@ menuIcons:
 
 ```yml
 site:
-	favicon: favicon.ico
+	favicon: favicon.png
 profile:
 	avatar: avatar.png
 ```
