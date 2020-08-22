@@ -7,7 +7,6 @@ tags: [
 ]
 categories: [
     "docker",
-    "syntax",
 ]
 ---
 
@@ -129,7 +128,7 @@ docker container stats
 
 마지막으로 http://localhost:80으로 접속해서 Nginx 웹 브라우저를 확인합니다.
 
-![DockerSeries2-(1)](/assets/images/2019-06-01-DockerSeries2/1.png){: width="900" height="700"}
+![](/images/2019-06-01-docker-01.png)
 
 ***
 
