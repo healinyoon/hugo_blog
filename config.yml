@@ -95,15 +95,15 @@ params:
     enabled: true # Whether to show profile bar
     avatar: avatar.png
     gravatar: # Gravatar email address, if you enable Gravatar, your avatar config will be overriden
-    author: xiaoheiAh
-    author_title: author title
-    author_description: Good Good Study, Day Day Up~
-    location: Shanghai, China
-    follow: https://github.com/xiaoheiAh
+    author: rin gu
+    author_title: A Developer
+    author_description: Linux, Infrastructure, DevOps
+    location: Seoul, Korea
+    follow: https://github.com/healinyoon
     # Social Links
     social:
       links:
-        github: https://github.com/xiaoheiAh
+        github: https://github.com/healinyoon
         # weibo: http://weibo.com/{yourid}
         # twitter: https://twitter.com/
         # facebook: /
