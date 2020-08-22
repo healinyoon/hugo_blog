@@ -1,4 +1,4 @@
-baseURL: http://healinyoon.github.io/
+baseURL: https://healinyoon.github.io
 theme: pure
 title: healinyoon blog
 defaultContentLanguage: en  # en/zh/...
