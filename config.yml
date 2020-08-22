@@ -1,4 +1,4 @@
-baseURL: https://healinyoon.github.io/
+baseURL: exampleSite/config.toml
 theme: hugo-theme-pure
 title: healinyoon blog
 defaultContentLanguage: en  # en/zh/...
