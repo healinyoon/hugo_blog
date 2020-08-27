@@ -2,10 +2,10 @@
 title: "CI/CD와 Jenkins"
 date: 2020-08-27T19:25:40+09:00
 draft: false
-tags: [
+categories: [
     "jenkins",
 ]
-categories: [
+tag: [
     "ci/cd",
 ]
 ---
