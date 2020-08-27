@@ -3,10 +3,10 @@ title: "Docker 설치하기(CentOS)"
 date: 2019-06-01T23:52:44+09:00
 draft: false
 tags: [
-    "Docker",
+    "docker",
 ]
 categories: [
-    "MSA",
+    "msa",
 ]
 ---
 
