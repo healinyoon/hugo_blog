@@ -5,7 +5,7 @@ draft: false
 categories: [
     "jenkins",
 ]
-tag: [
+tags: [
     "ci/cd",
     "master-slave",
 ]

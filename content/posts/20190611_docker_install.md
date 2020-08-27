@@ -5,7 +5,7 @@ draft: false
 categories: [
     "docker",
 ]
-tag: [
+tags: [
     "msa",
 ]
 ---
