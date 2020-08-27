@@ -18,7 +18,7 @@ Jenkins는 기본적으로 단일 서버로 동작합니다. 그러나 단일 �
 
 위의 요구사항을 충족하기 위해 Jenknis 분산 아키텍처인 Master-Slave 구성이 도입되었습니다.
 
-![출처: https://medium.com/@foxutech/how-to-add-jenkins-slave-to-master-16cf390b7c05](images/master-slave.png)
+![출처: https://medium.com/@foxutech/how-to-add-jenkins-slave-to-master-16cf390b7c05](images/20200827_jenkins_master_slave/master-slave.png)
 
 
 # Jenkins Master와 Slave의 역할
@@ -58,4 +58,4 @@ Jenkins Master-Slave는 다음의 요구사항을 만족시키면 매우 간단�
 ![](/20200827_jenkins_master_slave/images/2-12.png)  
 
 등록된 노드의 [로그]를 확인하면 다음과 같이 Master 서버와 잘 연동된 것을 확인할 수 있습니다.
-![](/images/2-13.png)
+![](/images/20200827_jenkins_master_slave/2-13.png)
