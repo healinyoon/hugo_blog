@@ -128,7 +128,7 @@ docker container stats
 
 마지막으로 http://localhost:80으로 접속해서 Nginx 웹 브라우저를 확인합니다.
 
-![](/images/docker/2019-06-01-docker-01.png)
+![](/images/20190611_docker_install/2019-06-01-docker-01.png)
 
 ***
 
