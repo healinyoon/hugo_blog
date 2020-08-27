@@ -18,15 +18,15 @@ Jenkins는 기본적으로 단일 서버로 동작합니다. 그러나 단일 �
 
 위의 요구사항을 충족하기 위해 Jenknis 분산 아키텍처인 Master-Slave 구성이 도입되었습니다.
 
-![출처: https://medium.com/@foxutech/how-to-add-jenkins-slave-to-master-16cf390b7c05](images/20200827_jenkins_master_slave/master-slave.png)
+![](images/20200827_jenkins_master_slave/master-slave.png)
 
 
 # Jenkins Master와 Slave의 역할
 
 | 구분 | 역할 |
 | --- | --- |
-| Master | * Build 작업 예약<br/>* Build 실행을 위한 작업 분배<br/>* Slave node 모니터링(필요에 따라 on/offline 전환 가능)<br/>* Build 결과 기록 |
-| Slave | * Jenkins Master의 요청 수신<br/>* Build 실행|
+| Master | * Build 작업 예약<br>* Build 실행을 위한 작업 분배<br>* Slave node 모니터링(필요에 따라 on/offline 전환 가능)<br>* Build 결과 기록 |
+| Slave | * Jenkins Master의 요청 수신<br>* Build 실행|
 
 # Jenkins Master-Slave 연동 방법
 
