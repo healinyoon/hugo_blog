@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Cluster 설치하기"
 date: 2020-08-28T17:11:38+09:00
-draft: false
+draft: true
 categories: [
     "docker",
     "kubernetes",

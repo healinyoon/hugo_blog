@@ -1,7 +1,7 @@
 ---
 title: "쿠버네티스를 위한 JenkinsX 개념과 구축하기"
 date: 2020-08-28T16:29:47+09:00
-draft: false
+draft: true
 ---
 
 # Kubernetes에서 CI/CD를 구축할 때 겪는 어려움
