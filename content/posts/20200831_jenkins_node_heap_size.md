@@ -40,7 +40,7 @@ JAVA_ARGS="-Xmx2048m"   # 2048MB size
 [Jenkins 관리] > [노드 관리] > '노드 선택 후 ' [설정] > [고급]
 ![heap](/images/20200831_jenkins_node_heap_size/args.png)
 
-# Jenkins 권장 사양[자세히](https://docs.cloudbees.com/docs/admin-resources/latest/jvm-troubleshooting/#suggested-specifications)
+# Jenkins 권장 사양[(자세히)](https://docs.cloudbees.com/docs/admin-resources/latest/jvm-troubleshooting/#suggested-specifications)
 ![heap](/images/20200831_jenkins_node_heap_size/heap.png)
 
 # 참고
