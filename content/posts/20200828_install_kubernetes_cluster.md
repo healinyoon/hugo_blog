@@ -24,9 +24,9 @@ tags: [
 
 | 노드 | vCPU | RAM | Disk |
 | --- | --- | --- | --- |
-| Master | 2 | 8GiB |  |
-| Worker01 | 2 | 8GiB |  |
-| Worker02 | 2 | 8GiB |  |
+| master01 | 2 | 8GiB |  |
+| worker01 | 2 | 8GiB |  |
+| worker02 | 2 | 8GiB |  |
 
 ### Required ports
 
@@ -39,12 +39,12 @@ tags: [
 
 # Docker 설치
 
-아래의 링크를 참고하여 Docker를 설치합니다.
+아래의 링크를 참고하여 Docker를 설치합니다.  
 [Docker 설치하기](https://healinyoon.github.io/2019/06/20190611_docker_install/)
 
 # Kubernetes  클러스터 구성
 
-* [쿠버네티스 공식 사이트 kubeam 설치](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/)
+[쿠버네티스 공식 사이트 kubeam 설치](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/)
 
 모든 노드에 아래의 패키지를 설치한다.
 * kubeadm: 클러스터를 부트스트랩하는 명령(쿠버네티스 관리)
@@ -87,16 +87,18 @@ versionlock added: 3
 ### 3) hostname 등록
 
 ```
-sudo hostnamectl set-hostname master01
+# sudo hostnamectl set-hostname master01
 
 또는
 
-sudo hostnamectl set-hostname worker01
+# sudo hostnamectl set-hostname worker01
 ```
 
 ### 4) /etc/hosts 파일 수정
 
 ```
+# vi /etc/hosts
+
 아래에 추가
 {IP} master01
 {IP} worker01
