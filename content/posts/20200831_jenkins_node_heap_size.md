@@ -21,7 +21,7 @@ Jenkins node heap memory 사이즈 변경 방법 정리
 * [Jenkins 권장 사양](https://docs.cloudbees.com/docs/admin-resources/latest/jvm-troubleshooting/#suggested-specifications)
 
 
-# Jenkinst Heap Memory 옵션
+# Jenkins Heap Memory 옵션
 Jenkins에서는 다양한 JAVA 옵션을 인수로 받을 수 있음  
 Jenkins node heap memory 사이즈를 변경하기 위한 인수: `-Xmx`와 `-Xms`
 ```
