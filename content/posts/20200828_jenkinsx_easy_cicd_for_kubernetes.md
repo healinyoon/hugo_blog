@@ -1,7 +1,17 @@
 ---
 title: "쿠버네티스를 위한 JenkinsX 개념과 구축하기"
 date: 2020-08-28T16:29:47+09:00
-draft: true
+draft: false
+categories: [
+    "jenkinsx",
+    "kubernetes",
+]
+tags: [
+    "msa",
+    "k8s",
+    "ci/cd",
+    
+]
 ---
 
 # Kubernetes에서 CI/CD를 구축할 때 겪는 어려움
@@ -29,6 +39,25 @@ JenkinsX는 이러한 문제를 해결하기 위해 등장했습니다. JenkinsX
   * Test -> Staging -> Production
 * Lots of feedback
   * E.g. commenting on issues as they hit Staging + Production
+
+# Jenkins X 설치하기
+
+## JX
+JX는 JenkinsX 사용을 위한 CLI tool입니다. 다음 명령어로 JX를 설치합니다.
+
+##### macOs:
+
+```
+brew tap jenkins-x/jx
+brew install jx
+```
+
+##### Linux:
+
+```
+curl -L https://github.com/jenkins-x/jx/releases/download/v2.1.138/jx-linux-amd64.tar.gz | tar xzv 
+sudo mv jx /usr/local/bin
+```
 
 
 # Kubernetes + Jenkins X 시작하기
