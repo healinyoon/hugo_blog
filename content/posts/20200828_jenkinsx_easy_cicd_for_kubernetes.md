@@ -9,8 +9,7 @@ categories: [
 tags: [
     "msa",
     "k8s",
-    "ci/cd",
-    
+    "ci/cd",   
 ]
 ---
 
@@ -46,17 +45,29 @@ JenkinsX는 이러한 문제를 해결하기 위해 등장했습니다. JenkinsX
 JX는 JenkinsX 사용을 위한 CLI tool입니다. 다음 명령어로 JX를 설치합니다.
 
 ##### macOs:
-
 ```
 brew tap jenkins-x/jx
 brew install jx
 ```
 
 ##### Linux:
-
 ```
 curl -L https://github.com/jenkins-x/jx/releases/download/v2.1.138/jx-linux-amd64.tar.gz | tar xzv 
 sudo mv jx /usr/local/bin
+```
+
+## Kubernetes + JenkinsX 시작하기
+
+##### Public cloud를 사용하고 있는 경우:
+```
+jx create cluster aws
+jx create cluster gke
+jx create cluster aks
+```
+
+##### 이미 cluster를 사용하고 있는 경우 - ensure RBAC enaled:
+```
+jx install
 ```
 
 
