@@ -1,5 +1,5 @@
 ---
-title: "20200901_k8s_pod_network"
+title: "쿠버네티스 POD Network"
 date: 2020-09-01T13:33:15+09:00
 draft: false
 categories: [
