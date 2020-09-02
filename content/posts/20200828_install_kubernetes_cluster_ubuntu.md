@@ -1,6 +1,6 @@
 ---
-title: "Kubernetes Cluster 설치하기"
-date: 2020-08-28T17:11:38+09:00
+title: "Kubernetes Cluster 설치하기(ubuntu18.04)"
+date: 2020-09-02T17:11:38+09:00
 draft: false
 categories: [
     "docker",
@@ -14,7 +14,7 @@ tags: [
 
 # Kubernetes Cluster 설치하기
 
-이 페이지에서는 `kubeadm` tool을 설치하고 이를 사용하여 kubernetes cluster를 구축하는 방법을 정리했습니다.
+이 페이지에서는 ubuntu18.04에 `kubeadm` tool을 설치하고 이를 사용하여 kubernetes cluster를 구축하는 방법을 정리했습니다.
 
 # 구성
 
@@ -39,8 +39,11 @@ tags: [
 
 # Docker 설치
 
-아래의 링크를 참고하여 Docker를 설치합니다.  
-[Docker 설치하기](https://healinyoon.github.io/2019/06/20190611_docker_install/)
+```
+# curl -fsSL https://get.docker.com/ | sudo sh
+# systemctl start docker
+# systemctl enable docker
+```
 
 # Kubernetes  클러스터 구성
 
@@ -54,34 +57,22 @@ tags: [
 ### 1) Kubernetes 리포지토리 구성
 
 ```
-# cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
-[kubernetes]
-name=Kubernetes
-baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-\$basearch
-enabled=1
-gpgcheck=1
-repo_gpgcheck=1
-gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
-exclude=kubelet kubeadm kubectl
-EOF
+# sudo apt-get update && sudo apt-get install -y apt-transport-https curl
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
 ```
 
 ### 2) Kubeadm, Kubelet, Kubectl 설치
 
 ```
-# sudo yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
-# sudo systemctl enable --now kubelet
-# systemctl start kubelet
-```
+# cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
+deb https://apt.kubernetes.io/ kubernetes-xenial main
+EOF
 
-패키지가 자동으로 업그레이드 되지 않도록 설정
-```
-# yum install yum-plugin-versionlock
-# sudo yum versionlock kubelet kubeadm kubectl
-Adding versionlock on: 0:kubelet-1.19.0-0
-Adding versionlock on: 0:kubeadm-1.19.0-0
-Adding versionlock on: 0:kubectl-1.19.0-0
-versionlock added: 3
+sudo apt-get update
+sudo apt-get install -y kubelet kubeadm kubectl
+
+// 패키지가 자동으로 업그레이드 되지 않도록 설정
+sudo apt-mark hold kubelet kubeadm kubectl
 ```
 
 ### 3) hostname 등록
@@ -105,24 +96,17 @@ versionlock added: 3
 {IP} worker02
 ```
 
-### 5) SELinux 끄기
+### 5) Iptables 설정
 
 ```
-# sudo setenforce 0
-# sudo sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
-```
-
-### 6) Iptables 설정
-
-```
-cat <<EOF > /etc/sysctl.d/k8s.conf
+# cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
 net.bridge.bridge-nf-call-ip6tables = 1
 net.bridge.bridge-nf-call-iptables = 1
 EOF
-sysctl --system
+# sudo sysctl --system
 ```
 
-### 7) 스왑 기능 비활성화
+### 6) 스왑 기능 비활성화
 
 ```
 swap 끄기
@@ -132,7 +116,7 @@ swap 끄기
 # sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
 ```
 
-### 8) 마스터 노드 초기화
+### 7) 마스터 노드 초기화
 
 ```
 # kubeadm init
@@ -158,9 +142,9 @@ kubeadm join 10.1.11.4:6443 --token xxxxxxxxxxxxxxxxxxxxxxx \
 
 master node에서 아래 명령어를 수행하고
 ```
-mkdir -p $HOME/.kube
-sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-sudo chown $(id -u):$(id -g) $HOME/.kube/config
+$ mkdir -p $HOME/.kube
+$ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+$ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```
 
 worker node에서 아래의 명령어를 수행하여 master node와 join한다.
@@ -178,13 +162,19 @@ healin-k8s-worker01   NotReady   <none>   30s   v1.19.0
 healin-k8s-worker02   NotReady   <none>   29s   v1.19.0
 ```
 
-### 9) 네트워크 애플리케이션 설치
+### 8) 네트워크 애플리케이션 설치
 
 pod 네트워크 애플리케이션을 설치해야 클러스터 내의 node간 통신이 가능하다.  
 사용 가능한 옵션은 [여기](https://kubernetes.io/docs/concepts/cluster-administration/networking/#how-to-implement-the-kubernetes-networking-model)에서 확인할 수 있다.  
 다음 명령을 master node에서 수행하여 flannel pod 네트워크 애플리케이션을 설치한다.
 ```
 sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+
+이런 오류 발생시
+The connection to the server localhost:8080 was refused - did you specify the right host or port?
+
+export KUBECONFIG=/etc/kubernetes/admin.conf
+을 적용해보자
 ```
 
 master node에서 `kubectl get nodes` 명령어를 잠시 후 다시 입력하면 다음과 같이 STATUS가 **NotReady** => **Ready**로 변경된 것을 확인할 수 있다.
