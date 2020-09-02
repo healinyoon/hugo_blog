@@ -166,9 +166,9 @@ healin-k8s-worker02   NotReady   <none>   29s   v1.19.0
 
 pod 네트워크 애플리케이션을 설치해야 클러스터 내의 node간 통신이 가능하다.  
 사용 가능한 옵션은 [여기](https://kubernetes.io/docs/concepts/cluster-administration/networking/#how-to-implement-the-kubernetes-networking-model)에서 확인할 수 있다.  
-다음 명령을 master node에서 수행하여 flannel pod 네트워크 애플리케이션을 설치한다.
+다음 명령을 master node에서 수행하여 weave pod 네트워크 애플리케이션을 설치한다.
 ```
-sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
 
 이런 오류 발생시
 The connection to the server localhost:8080 was refused - did you specify the right host or port?
