@@ -1,7 +1,7 @@
 ---
 title: "쿠버네티스를 위한 JenkinsX 개념과 구축하기"
 date: 2020-08-28T16:29:47+09:00
-draft: false
+draft: true
 categories: [
     "jenkinsx",
     "kubernetes",
@@ -41,35 +41,19 @@ JenkinsX는 이러한 문제를 해결하기 위해 등장했습니다. JenkinsX
 
 # Jenkins X 설치하기
 
-## JX
 JX는 JenkinsX 사용을 위한 CLI tool입니다. 다음 명령어로 JX를 설치합니다.
 
-##### macOs:
+## macOs:
 ```
 brew tap jenkins-x/jx
 brew install jx
 ```
 
-##### Linux:
+## Linux:
 ```
 curl -L https://github.com/jenkins-x/jx/releases/download/v2.1.138/jx-linux-amd64.tar.gz | tar xzv 
 sudo mv jx /usr/local/bin
 ```
 
-## Kubernetes + JenkinsX 시작하기
-
-##### Public cloud를 사용하고 있는 경우:
-```
-jx create cluster aws
-jx create cluster gke
-jx create cluster aks
-```
-
-##### 이미 cluster를 사용하고 있는 경우 - ensure RBAC enaled:
-```
-jx install
-```
-
-
-# Kubernetes + Jenkins X 시작하기
+# GKE + JenkinsX 시작하기
 
