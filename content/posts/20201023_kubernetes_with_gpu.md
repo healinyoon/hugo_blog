@@ -15,7 +15,7 @@ Kubernetes에서 GPU를 사용하도록 환경을 구축하고 사용해보자.
 * [Nvidia k8s-device-plugin 공식 사이트](https://github.com/NVIDIA/k8s-device-plugin/tree/v1.12)
 * [Nvidia docker 공식 사이트](https://github.com/NVIDIA/nvidia-docker)
 
-## 1.1 가장 정보가 많았던 YAML으로 설치, 그러나 실패
+### 1.1 가장 정보가 많았던 YAML으로 설치, 그러나 실패
 
 처음에 [여기](https://likefree.tistory.com/15) 링크를 참고하여 진행했다.
 
@@ -28,7 +28,7 @@ daemonset-1.12 created
 
 하지만 아래 이슈 발생해서 실패했다 ↓ ↓ ↓
 
-## 1.2. 이슈
+### 1.2. 이슈
 
 #### 1.2.1. 이슈 내용
 쿠버네티스 `1.15` 버전 이하를 설치했을 경우 문제 없겠지만, `1.16` 버전 이상을 설치했을 경우 다음과 같은 에러가 발생한다.
@@ -135,7 +135,7 @@ nodeSelector:
   gpus: "true"
 ```
 
-## 1.3. gpu-plugin DeamonSet Pod 정상 동작 확인
+### 1.3. gpu-plugin DeamonSet Pod 정상 동작 확인
 ```
 $ kubectl -n kube-system get pod -l name=nvidia-device-plugin-ds
 NAME                                        READY   STATUS    RESTARTS   AGE
@@ -174,7 +174,7 @@ gpu-1080ti-XX   9
 
 # 3. Pod에서 그래픽 카드 명령어 테스트
 
-## 3.1. GPU를 사용하는 Pod 생성하기
+### 3.1. GPU를 사용하는 Pod 생성하기
 
 #### 3.1.1. YAML 파일
 > gpu-k8s.yaml
@@ -241,7 +241,7 @@ Thu Jul  2 06:00:24 2020
 +-----------------------------------------------------------------------------+
 ```
 
-## 3.2. 2개의 Pod를 띄워서 gpu 4개를 모두 사용하기
+### 3.2. 2개의 Pod를 띄워서 gpu 4개를 모두 사용하기
 gpu-k8s2.yaml 매니패스트 파일을 하나 더 만들어서 위와 동일하게 실행해보자.
 
 #### 3.2.1. 결과 확인
@@ -279,7 +279,7 @@ Thu Jul  2 06:03:06 2020
 +-----------------------------------------------------------------------------+
 ```
 
-## 3.3. 컨테이너가 노드의 모든 GPU를 사용 가능하게 하고 싶다면
+### 3.3. 컨테이너가 노드의 모든 GPU를 사용 가능하게 하고 싶다면
 
 * request와 limit 설정 부분을 없애주면 된다.
 * 특이한 점은 이미 다른 파드에 GPU를 모두 할당 해준 상태에서도 파드 생성 가능하다.
