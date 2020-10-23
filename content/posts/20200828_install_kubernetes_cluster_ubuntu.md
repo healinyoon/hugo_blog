@@ -37,7 +37,7 @@ tags: [
 ![](/images/20200828_install_kubernetes_cluster/2.png)
 
 
-# Docker 설치
+# Docker 설치(모든 node)
 
 ```
 # curl -fsSL https://get.docker.com/ | sudo sh
@@ -54,14 +54,14 @@ tags: [
 * kubelet: 클러스터의 모든 시스템에서 실행되는 구성 요소로, 포트 및 컨테이너 시작과 같은 작업을 수행(쿠버네티스 서비스)
 * kubectl: 클러스터와 통신하기 위한 command line util(쿠버네티스 클라이언트 프로그램, 클러스터 구성과는 전혀 상관 없음)
 
-### 1) Kubernetes 리포지토리 구성
+### 1) Kubernetes 리포지토리 구성(모든 node)
 
 ```
 # sudo apt-get update && sudo apt-get install -y apt-transport-https curl
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
 ```
 
-### 2) Kubeadm, Kubelet, Kubectl 설치
+### 2) Kubeadm, Kubelet, Kubectl 설치(모든 node)
 
 ```
 # cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
@@ -73,6 +73,10 @@ sudo apt-get install -y kubelet kubeadm kubectl
 
 // 패키지가 자동으로 업그레이드 되지 않도록 설정
 sudo apt-mark hold kubelet kubeadm kubectl
+
+// 데몬 재시작
+systemctl daemon-reload
+systemctl restart kubelet
 ```
 
 ### 3) hostname 등록
@@ -97,7 +101,7 @@ sudo apt-mark hold kubelet kubeadm kubectl
 ```
 
 ### 5) Iptables 설정
-
+브릿지 되어있는 IPv4 트래픽을 iptables 체인으로 전달될 수 있도록 한다.
 ```
 # cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
 net.bridge.bridge-nf-call-ip6tables = 1
@@ -184,6 +188,14 @@ NAME                  STATUS   ROLES    AGE     VERSION
 healin-k8s-master01   Ready    master   17m     v1.19.0
 healin-k8s-worker01   Ready    <none>   7m42s   v1.19.0
 healin-k8s-worker02   Ready    <none>   7m41s   v1.19.0
+```
+
+### 9) master node를 worker node로도 사용하고 싶다면,
+쿠버네티스 클러스터의  control-plane 노드는 보안상의 이유로 격리되어 있다(기본값). 
+master node에서는 pod 가 스케줄링 되지 않으므로, 1대의 머신으로만 쿠버네티스 클러스터를 구축할 경우 격리 해제해야 한다.
+
+```
+$ kubectl taint nodes –all node-role.kubernetes.io/master-
 ```
 
 # 참고
