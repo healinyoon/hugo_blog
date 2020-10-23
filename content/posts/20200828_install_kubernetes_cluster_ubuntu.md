@@ -30,10 +30,10 @@ tags: [
 
 ### Required ports
 
-**1) Control-plane node(s)**
+**1) Control-plane node(s)**  
 ![](/images/20200828_install_kubernetes_cluster/1.png)
 
-**2) Worker node(s)**
+**2) Worker node(s)**  
 ![](/images/20200828_install_kubernetes_cluster/2.png)
 
 
