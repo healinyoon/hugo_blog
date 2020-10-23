@@ -3,11 +3,11 @@ title: "Jenkins Node Heap Memory 사이즈 설정하기(-Xmx/-Xms 옵션)"
 date: 2020-08-31T13:26:55+09:00
 draft: false
 categories: [
-    "jenkins",
+  "ci/cd",
+  "jvm",
 ]
 tags: [
-    "ci/cd",
-    "jvm",
+  "jenkins",
 ]
 ---
 

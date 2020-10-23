@@ -3,15 +3,14 @@ title: "Kubernetes CI/CD 구축하기 - Tool (1) Gitlab + Helm"
 date: 2020-09-08T13:02:19+09:00
 draft: true
 categories: [
-    "docker",
-    "kubernetes",
-    "gitlab",
-    "helm"
+  "msa",
+  "ci/cd",
 ]
 tags: [
-    "msa",
-    "k8s",
-    "ci/cd"
+  "docker",
+  "kubernetes",
+  "gitlab",
+  "helm",
 ]
 ---
 

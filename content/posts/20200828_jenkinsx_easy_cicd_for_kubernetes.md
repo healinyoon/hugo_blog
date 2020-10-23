@@ -3,13 +3,12 @@ title: "쿠버네티스를 위한 JenkinsX 개념과 구축하기"
 date: 2020-08-28T16:29:47+09:00
 draft: true
 categories: [
-    "jenkinsx",
-    "kubernetes",
-]
+  "msa",
+  "ci/cd",   
+  ]
 tags: [
-    "msa",
-    "k8s",
-    "ci/cd",   
+  "jenkinsx",
+  "kubernetes",
 ]
 ---
 

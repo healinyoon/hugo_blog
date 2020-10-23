@@ -3,10 +3,10 @@ title: "GPU 성능 비교하기: Host vs Container"
 date: 2020-10-23T10:50:18+09:00
 draft: false
 categories: [
-    "docker",
+  "msa",
 ]
 tags: [
-    "msa",
+  "docker",
 ]
 ---
 

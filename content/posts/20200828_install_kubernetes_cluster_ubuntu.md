@@ -3,12 +3,11 @@ title: "Kubernetes Cluster 설치하기(ubuntu18.04)"
 date: 2020-09-02T17:11:38+09:00
 draft: false
 categories: [
-    "docker",
-    "kubernetes",
-]
+  "msa",
+  ]
 tags: [
-    "msa",
-    "k8s",
+  "docker",
+  "kubernetes",
 ]
 ---
 

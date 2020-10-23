@@ -3,11 +3,11 @@ title: "Jenkins Master-Slave 구성하기"
 date: 2020-08-27T19:35:29+09:00
 draft: false
 categories: [
-    "jenkins",
+  "devops",
+  "ci/cd",
 ]
 tags: [
-    "ci/cd",
-    "master-slave",
+  "jenkins",
 ]
 ---
 

@@ -3,11 +3,10 @@ title: "Kuberenets 특정 버전으로 설치하기"
 date: 2020-10-09T12:48:29+09:00
 draft: false
 categories: [
-    "kubernetes",
+  "msa",
 ]
 tags: [
-    "msa",
-    "k8s",
+  "kubernetes",
 ]
 ---
 

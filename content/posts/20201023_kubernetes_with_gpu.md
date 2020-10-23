@@ -2,13 +2,12 @@
 title: "Kubernets(쿠버네티스) with GPU 구축하기"
 date: 2020-10-23T10:56:19+09:00
 draft: false
-categories: [
-    "docker",
-    "kubernetes",
+categories: [  
+  "msa",
 ]
 tags: [
-    "msa",
-    "k8s",
+  "docker",
+  "kubernetes",
 ]
 ---
 

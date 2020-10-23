@@ -3,10 +3,11 @@ title: "CI/CD와 Jenkins"
 date: 2020-08-27T19:25:40+09:00
 draft: false
 categories: [
-    "jenkins",
+  "devops",
+  "ci/cd",
 ]
 tags: [
-    "ci/cd",
+  "jenkins",
 ]
 ---
 

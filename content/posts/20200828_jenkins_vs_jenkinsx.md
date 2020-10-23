@@ -3,11 +3,11 @@ title: "Jenkins와 JenkinsX"
 date: 2020-08-28T14:44:05+09:00
 draft: true
 categories: [
-    "jenkins",
-    "jenkinsx",
+  "ci/cd",
 ]
 tags: [
-    "ci/cd",
+  "jenkins",  
+  "jenkinsx",
 ]
 ---
 
