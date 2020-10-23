@@ -10,7 +10,7 @@ Kubernetes에서 GPU를 사용하도록 환경을 구축하고 사용해보자.
 
 # 1. Nvidia Plugin Pod 생성
 
-**ref)**
+### ref)
 
 * [Nvidia k8s-device-plugin 공식 사이트](https://github.com/NVIDIA/k8s-device-plugin/tree/v1.12)
 * [Nvidia docker 공식 사이트](https://github.com/NVIDIA/nvidia-docker)
@@ -40,7 +40,7 @@ error: unable to recognize "https://raw.githubusercontent.com/NVIDIA/k8s-device-
 → 2) k8s-device-plugin을 다시 설치하고  
 → 3) 매니패스트 파일도 적절하게 수정해주었다.  
 
-**ref)**
+### ref)
 
 * [Kubectl convert 참고 자료](https://medium.com/star-systems-labs/kubectl-convert-update-api-versions-automatically-e669add17e3d)
 * [No matches 이슈 해결 자료](ttps://www.kangwoo.kr/2020/02/17/pc%EC%97%90-kubeflow-%EC%84%A4%EC%B9%98%ED%95%98%EA%B8%B0-2%EB%B6%80-kubernetes-nvidia-device-plugin-%EC%84%A4%EC%B9%98%ED%95%98%EA%B8%B0/)  
@@ -197,7 +197,7 @@ spec:
         nvidia.com/gpu: 2
 ```
 
-**ref)**
+### ref)
 nvidia/cuda 도커 이미지 버전이 맞지 않은 이슈 발생 시 ⇒ 도커 허브에서 맞는 이미지 버전을 찾아서 사용해주면 된다.
 
 * [Docker Hub](https://hub.docker.com/r/nvidia/cuda/)
