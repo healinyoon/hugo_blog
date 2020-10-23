@@ -81,7 +81,7 @@ systemctl daemon-reload
 systemctl restart kubelet
 ```
 
-### 3) hostname 등록
+### 3) hostname 등록(모든 node)
 
 ```
 # sudo hostnamectl set-hostname master01
@@ -91,7 +91,7 @@ systemctl restart kubelet
 # sudo hostnamectl set-hostname worker01
 ```
 
-### 4) /etc/hosts 파일 수정
+### 4) /etc/hosts 파일 수정(모든 node)
 
 ```
 # vi /etc/hosts
@@ -102,7 +102,7 @@ systemctl restart kubelet
 {IP} worker02
 ```
 
-### 5) Iptables 설정
+### 5) Iptables 설정(모든 node)
 브릿지 되어있는 IPv4 트래픽을 iptables 체인으로 전달될 수 있도록 한다.
 ```
 # cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
@@ -112,7 +112,7 @@ EOF
 # sudo sysctl --system
 ```
 
-### 6) 스왑 기능 비활성화
+### 6) 스왑 기능 비활성화(모든 node)
 
 ```
 swap 끄기
@@ -171,7 +171,7 @@ healin-k8s-worker02   NotReady   <none>   29s   v1.19.0
 ### 8) 네트워크 애플리케이션 설치
 
 pod 네트워크 애플리케이션을 설치해야 클러스터 내의 node간 통신이 가능하다.  
-사용 가능한 옵션은 [여기](https://kubernetes.io/docs/concepts/cluster-administration/networking/#how-to-implement-the-kubernetes-networking-model)에서 확인할 수 있다.  
+사용 가능한 네트워크 옵션은 [여기](https://kubernetes.io/docs/concepts/cluster-administration/networking/#how-to-implement-the-kubernetes-networking-model)에서 확인할 수 있다.  
 다음 명령을 master node에서 수행하여 weave pod 네트워크 애플리케이션을 설치한다.
 ```
 kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
@@ -183,7 +183,7 @@ export KUBECONFIG=/etc/kubernetes/admin.conf
 을 적용해보자
 ```
 
-master node에서 `kubectl get nodes` 명령어를 잠시 후 다시 입력하면 다음과 같이 STATUS가 **NotReady** => **Ready**로 변경된 것을 확인할 수 있다.
+master node에서 `kubectl get nodes` 명령어를 잠시 후 다시 입력하면 다음과 같이 `STATUS`가 **NotReady** => **Ready**로 변경된 것을 확인할 수 있다.
 ```
 # kubectl get nodes
 NAME                  STATUS   ROLES    AGE     VERSION
@@ -193,7 +193,8 @@ healin-k8s-worker02   Ready    <none>   7m41s   v1.19.0
 ```
 
 ### 9) master node를 worker node로도 사용하고 싶다면,
-쿠버네티스 클러스터의  control-plane 노드는 보안상의 이유로 격리되어 있다(기본값). 
+쿠버네티스 클러스터의  control-plane 노드는 보안상의 이유로 격리되어 있다(기본값).  
+
 master node에서는 pod 가 스케줄링 되지 않으므로, 1대의 머신으로만 쿠버네티스 클러스터를 구축할 경우 격리 해제해야 한다.
 
 ```
