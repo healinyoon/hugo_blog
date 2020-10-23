@@ -51,23 +51,23 @@ Version:          19.03.6
 
 # 3. Host 설정
 
-### 3.1. 가상환경 생성 - /home/ldccai/PerformTestEnv/performTestEnv
+### 3.1. 가상환경 생성
 ```
 # pip3 install virtualenv
-# virtualenv /home/ldccai/PerformTestEnv/performTestEnv
+# virtualenv /home/rin_gu/PerformTestEnv/performTestEnv
 ```
 
 ### 3.2. Tensorflow 설치
 ```
-# source /home/ldccai/PerformanceTest/performTestEnv/bin/activate
+# source /home/rin_gu/PerformanceTest/performTestEnv/bin/activate
 # python -m pip install --upgrade pip
 # sudo -H pip install --upgrade tf-nightly-gpu
 ```
 
 ### 3.3. 성능 테스트 코드 실행
 ```
-# source /home/ldccai/PerformanceTest/performTestEnv/bin/activate
-# cd /home/ldccai/PerformanceTest/
+# source /home/rin_gu/PerformanceTest/performTestEnv/bin/activate
+# cd /home/rin_gu/PerformanceTest/
 # git clone https://github.com/tensorflow/benchmarks.git
 # cd benchmarks
 ```
