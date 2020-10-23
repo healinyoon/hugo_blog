@@ -81,7 +81,6 @@ kubeadm |  1.18.8-00 | https://apt.kubernetes.io kubernetes-xenial/main amd64 Pa
 ### 1.18.8-00 버전으로 설치하기
 이제 다시 설치를 진행해봅니다.
 
-* kubeadm 설치
 원래 kubeadm만 설치해도 kubectl과 kubelet이 의존적으로 설치됩니다.  
 그런데 말입니다... 특이점이 발생합니다.
 
@@ -110,7 +109,7 @@ Setting up kubeadm (1.18.8-00) ...
 ```
 
 위와 같이 kubectl이 1.19.2-00 버전으로 설치가 됩니다.   
-kubectl을 downgrade 해주는 방법도 있지만..
+이런 경우, kubectl을 downgrade 해주는 방법도 있지만..
 ```
 # apt-get install kubectl=1.18.8-00
 ```
