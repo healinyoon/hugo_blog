@@ -10,7 +10,7 @@ Kubernetes에서 GPU를 사용하도록 환경을 구축하고 사용해보자.
 
 # 1. Nvidia Plugin Pod 생성
 
-### ref)
+#### ref)
 
 * [Nvidia k8s-device-plugin 공식 사이트](https://github.com/NVIDIA/k8s-device-plugin/tree/v1.12)
 * [Nvidia docker 공식 사이트](https://github.com/NVIDIA/nvidia-docker)
@@ -30,7 +30,7 @@ daemonset-1.12 created
 
 ## 1.2. 이슈
 
-### 1.2.1. 이슈 내용
+#### 1.2.1. 이슈 내용
 쿠버네티스 `1.15` 버전 이하를 설치했을 경우 문제 없겠지만, `1.16` 버전 이상을 설치했을 경우 다음과 같은 에러가 발생한다.
 ```
 error: unable to recognize "https://raw.githubusercontent.com/NVIDIA/k8s-device-plugin/v1.12/nvidia-device-plugin.yml": no matches for kind "DaemonSet" in version "extensions/v1beta1"
@@ -40,7 +40,7 @@ error: unable to recognize "https://raw.githubusercontent.com/NVIDIA/k8s-device-
 → 2) k8s-device-plugin을 다시 설치하고  
 → 3) 매니패스트 파일도 적절하게 수정해주었다.  
 
-### ref)
+#### ref)
 
 * [Kubectl convert 참고 자료](https://medium.com/star-systems-labs/kubectl-convert-update-api-versions-automatically-e669add17e3d)
 * [No matches 이슈 해결 자료](ttps://www.kangwoo.kr/2020/02/17/pc%EC%97%90-kubeflow-%EC%84%A4%EC%B9%98%ED%95%98%EA%B8%B0-2%EB%B6%80-kubernetes-nvidia-device-plugin-%EC%84%A4%EC%B9%98%ED%95%98%EA%B8%B0/)  
@@ -50,7 +50,7 @@ error: unable to recognize "https://raw.githubusercontent.com/NVIDIA/k8s-device-
 $ kubectl describe pod {pod 명}
 ```
 
-### 1.2.2. 변경한 YAML 파일을 사용하여 DaemonSet Pod 생성
+#### 1.2.2. 변경한 YAML 파일을 사용하여 DaemonSet Pod 생성
 이제 커스터 마이징한 YAML 파일로 Pod를 생성해보자.
 > gpu-plugin.yaml
 ```
@@ -102,13 +102,15 @@ spec:
 ```
 위의 매니패스트 주요 사항은 다음과 같다.
 
-##### ① 리소스 유형 = DaemonSet
+**① 리소스 유형 = DaemonSet**
+
 ```
 kind: DaemonSet
 ```
     따라서 기본적으로는 모든 worker 노드 하나씩 동작하게 한다.
 
-##### ② RollingUpdate
+**② RollingUpdate**
+
 `spec.selector.matchLabels.name`
 
 ```
@@ -124,7 +126,7 @@ labels:
 
 name object가 `nvidia-device-plugin-ds` 인 리소스에 대하여 RollingUpdate를 설정한다.
 
-##### ③ node Label 지정
+**③ node Label 지정**
 
 `spec.template.spec.nodeSelector` 로 어느 노드의 DaemonSet으로 띄워줄 것인지 레이블링해준다.
 
@@ -152,7 +154,7 @@ $ kubectl -n kube-system logs  -l name=nvidia-device-plugin-ds
 2020/07/01 05:02:30 Registered device plugin with Kubelet
 ```
 
-### 🌟🌟 여기서 잠깐! 🌟🌟
+#### 🌟🌟 여기서 잠깐! 🌟🌟
 중요한 사항은 gpu를 사용하려는 Worker node가 `gpus: "true"` 레이블링이 되어 있어야 한다는 것이다. 
 
 * 만약 GPU가 있는 node인데 해당 DeamonSet이 올라가있지 않거나
@@ -174,7 +176,7 @@ gpu-1080ti-XX   9
 
 ## 3.1. GPU를 사용하는 Pod 생성하기
 
-### 3.1.1. YAML 파일
+#### 3.1.1. YAML 파일
 > gpu-k8s.yaml
 ```
 apiVersion: v1
@@ -197,14 +199,14 @@ spec:
         nvidia.com/gpu: 2
 ```
 
-### ref)
+###ref)
 nvidia/cuda 도커 이미지 버전이 맞지 않은 이슈 발생 시 ⇒ 도커 허브에서 맞는 이미지 버전을 찾아서 사용해주면 된다.
 
 * [Docker Hub](https://hub.docker.com/r/nvidia/cuda/)
 * [Kubernetes Resource Request와 Limit의 이해](https://itchain.wordpress.com/2018/05/16/kubernetes-resource-request-limit/)
 * [Schedule GPUs](https://kubernetes.io/docs/tasks/manage-gpus/scheduling-gpus/)
 
-### 3.1.2. Pod 생성 및 확인
+#### 3.1.2. Pod 생성 및 확인
 ```
 $ kubectl apply -f gpu-k8s.yaml
 pod/gpu-k8s created
@@ -214,7 +216,7 @@ NAME                                READY   STATUS    RESTARTS   AGE
 gpu-k8s                             1/1     Running   0          12s
 ```
 
-### 3.1.3. nvidia-smi 확인
+#### 3.1.3. nvidia-smi 확인
 ```
 $ kubectl logs gpu-k8s
 Thu Jul  2 06:00:24 2020
@@ -242,7 +244,7 @@ Thu Jul  2 06:00:24 2020
 ## 3.2. 2개의 Pod를 띄워서 gpu 4개를 모두 사용하기
 gpu-k8s2.yaml 매니패스트 파일을 하나 더 만들어서 위와 동일하게 실행해보자.
 
-### 3.2.1. 결과 확인
+#### 3.2.1. 결과 확인
 
 ```
 $ kubectl get pods
@@ -251,7 +253,7 @@ gpu-k8s                             1/1     Running   0          2m44s
 gpu-k8s2                            1/1     Running   0          2
 ```
 
-### 3.2.2. nvidia-smi 확인
+#### 3.2.2. nvidia-smi 확인
 
 ```
 $ kubectl logs gpu-k8s2
@@ -282,7 +284,7 @@ Thu Jul  2 06:03:06 2020
 * request와 limit 설정 부분을 없애주면 된다.
 * 특이한 점은 이미 다른 파드에 GPU를 모두 할당 해준 상태에서도 파드 생성 가능하다.
 
-### 3.3.1. YAML 파일
+#### 3.3.1. YAML 파일
 ```
 apiVersion: v1
 kind: Pod
@@ -302,13 +304,13 @@ spec:
       - nvidia-smi && tail -f /dev/null
 ```
 
-### 3.3.2. Pod 실행
+#### 3.3.2. Pod 실행
 ```
 $ kubectl apply -f gpu-all.yaml
 pod/gpu-all created
 ```
 
-### 3.3.3. 확인
+#### 3.3.3. 확인
 ```
 $ kubectl get pods
 NAME                                READY   STATUS    RESTARTS   AGE
