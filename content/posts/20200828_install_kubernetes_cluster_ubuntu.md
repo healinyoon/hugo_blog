@@ -204,6 +204,7 @@ $ kubectl taint nodes –all node-role.kubernetes.io/master-
 Control plane node isolation에 대한 자세한 내용은 아래 경로를 참고한다.  
 
 [쿠버네티스 공식 문서](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/)  
+
 [예시](https://17billion.github.io/kubernetes/2019/04/24/kubernetes_control_plane_working.html)
 
 
