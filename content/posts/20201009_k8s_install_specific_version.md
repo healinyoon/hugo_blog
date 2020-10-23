@@ -13,7 +13,7 @@ tags: [
 
 # 배경
 회사에서 Kubernetes를 운영하다보면 클러스터에 새로운 worker node를 추가해야하는 일이 종종 생깁니다.  
-문제는 `apt-get` 등 기본 패키지 관리 도구를 사용하여 생각 없이 설치하면 기존에 운영하던 k8s 클러스터 버전과 맞지 않은 최신 버전이 설치 된다는 것입니다...(~그러면 저처럼 작업을 2번 하게 됩니다 하하~)
+문제는 `apt-get` 등 기본 패키지 관리 도구를 사용하여 생각 없이 설치하면 기존에 운영하던 k8s 클러스터 버전과 맞지 않은 최신 버전이 설치 된다는 것입니다...(그러면 저처럼 작업을 2번 하게 됩니다.)
 
 그런데 바이너리 파일을 사용해서 설치하기는 또 귀찮고..  
 따라서 `apt`를 사용하되, 버전을 옵션으로 주는 방식으로 설치를 하기로 했습니다.  
@@ -22,7 +22,7 @@ tags: [
 
 # 설치하기
 사실 기존 k8s 클러스터 설치 프로세스와 다른 점은 거의 없습니다.
-기존의 프로세스는 [여기]()를 참고 바랍니다.
+기존의 프로세스는 [여기](https://healinyoon.github.io/2020/09/20200828_install_kubernetes_cluster_ubuntu/)를 참고 바랍니다.
 
 특정 버전 설치 옵션을 주는 부분만 신경써서 진행하면 됩니다.
 ```
@@ -110,28 +110,15 @@ Setting up kubeadm (1.18.8-00) ...
 ```
 
 위와 같이 kubectl이 1.19.2-00 버전으로 설치가 됩니다.
-찜찜하니까 downgrade 해줍니다.
+kubectl을 downgrade 해주는 방법도 있지만..
 ```
 # apt-get install kubectl=1.18.8-00
-Reading package lists... Done
-Building dependency tree
-Reading state information... Done
-The following packages will be DOWNGRADED:
-  kubectl
-0 upgraded, 0 newly installed, 1 downgraded, 0 to remove and 6 not upgraded.
-Need to get 8,827 kB of archives.
-After this operation, 1,036 kB of additional disk space will be used.
-Do you want to continue? [Y/n] Y
-Get:1 https://packages.cloud.google.com/apt kubernetes-xenial/main amd64 kubectl amd64 1.18.8-00 [8,827 kB]
-Fetched 8,827 kB in 9s (1,024 kB/s)
-dpkg: warning: downgrading kubectl from 1.19.2-00 to 1.18.8-00
-(Reading database ... 128169 files and directories currently installed.)
-Preparing to unpack .../kubectl_1.18.8-00_amd64.deb ...
-Unpacking kubectl (1.18.8-00) over (1.19.2-00) ...
-Setting up kubectl (1.18.8-00) ...
+```
+
+애초에 처음부터 모두 버전을 지정해주면 됩니다.
+```
+# sudo apt-get install -y kubelet=1.18.8-00 kubeadm=1.18.8-00 kubectl=1.18.8-00
 ```
 
 # Master에 join하기
-[참고](https://stackoverflow.com/questions/51126164/how-do-i-find-the-join-command-for-kubeadm-on-the-master)와 동일하게 진행한다.
-
--끝-
+[참고](https://stackoverflow.com/questions/51126164/how-do-i-find-the-join-command-for-kubeadm-on-the-master)와 동일하게 진행합니다.
