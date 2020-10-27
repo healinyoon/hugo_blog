@@ -4,6 +4,7 @@ date: 2020-10-23T10:50:18+09:00
 draft: false
 categories: [
   "msa",
+  "gpu",
 ]
 tags: [
   "docker",
