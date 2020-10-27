@@ -1,5 +1,5 @@
 ---
-title: "GPU 성능 비교하기: Host vs Container(+ Container에서 GPU 사용하기)"
+title: "GPU 성능 비교하기: Host vs Container(+Container에서 GPU 사용하기)"
 date: 2020-10-23T10:50:18+09:00
 draft: false
 categories: [
