@@ -12,8 +12,16 @@ tags: [
 ---
 
 # Intro
-Kubernetes에서 GPU를 사용하도록 환경을 구축하고 사용해보자. 여기서는 Kubernest 클러스터가 구축되어 있다고 전제하고 진행한다.  
-아직 설치가 되지 않았다면 [Kubernetes Cluster 설치하기(ubuntu18.04)](https://healinyoon.github.io/2020/09/20200828_install_kubernetes_cluster_ubuntu/)을 참고해서 설치 후 진행해야 한다.
+Kubernetes에서 GPU를 사용하도록 환경을 구축하고 사용해보자. 
+
+### 사전 요구 사항
+아래의 내용이 완료되었다는 전제로 진행하므로, 아직 충족되지 않은 조건이 있다면 선행해주자.
+
+#### 1. kubernetes cluster 구축
+아직 구축이 되어 있지 않다면 [Kubernetes Cluster 설치하기(ubuntu18.04)](https://healinyoon.github.io/2020/09/20200828_install_kubernetes_cluster_ubuntu/)를 참고하여 진행
+
+#### 2. nvidia-docker 설치
+아직 설치가 되어 있지 않다면 [nvidia-docker install guide](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker)를 참고하여 진행
 
 # 1. Nvidia Plugin Pod 생성
 
