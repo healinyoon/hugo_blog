@@ -1,5 +1,5 @@
 ---
-title: "20190602_shell_script"
+title: "Shell Scripts 사용하기"
 date: 2019-06-02T18:35:16+09:00
 draft: false
 categories: [
