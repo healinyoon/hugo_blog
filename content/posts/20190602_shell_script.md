@@ -120,7 +120,7 @@ User Home Directory:  /home/rin_gu
 - 변수 이름의 대소문자를 구분한다.
 - 변수를 대입할 때 '=' 좌우에 공백이 없어야 한다.
 
-![Shell1](/assets/images/2019-06-02-Shell1/1.png){: width="900" height="700"}
+![](/images/20190602_shell/shell.png)  
 
 ### 3-1. 변수의 입출력
 
