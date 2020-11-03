@@ -214,7 +214,7 @@ spec:
         nvidia.com/gpu: 2
 ```
 
-###ref)
+#### ref)
 nvidia/cuda 도커 이미지 버전이 맞지 않은 이슈 발생 시 ⇒ 도커 허브에서 맞는 이미지 버전을 찾아서 사용해주면 된다.
 
 * [Docker Hub](https://hub.docker.com/r/nvidia/cuda/)
