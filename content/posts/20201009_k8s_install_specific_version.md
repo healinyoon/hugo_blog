@@ -24,16 +24,16 @@ tags: [
 기존의 프로세스는 [여기](https://healinyoon.github.io/2020/09/20200828_install_kubernetes_cluster_ubuntu/)를 참고 바랍니다.
 
 특정 버전 설치 옵션을 주는 부분만 신경써서 진행하면 됩니다.
+
+### 저장소 추가
 ```
+# curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+
 # cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
 deb https://apt.kubernetes.io/ kubernetes-xenial main
 EOF
 
-sudo apt-get update
-sudo apt-get install -y kubelet kubeadm kubectl
-
-// 패키지가 자동으로 업그레이드 되지 않도록 설정
-sudo apt-mark hold kubelet kubeadm kubectl
+# sudo apt-get update
 ```
 
 ### 원래는 아래와 같이 그냥 최신 버전을 설치했다면 이번엔 옵션으로 버전을 줘야 합니다.
@@ -118,5 +118,53 @@ Setting up kubeadm (1.18.8-00) ...
 # sudo apt-get install -y kubelet=1.18.8-00 kubeadm=1.18.8-00 kubectl=1.18.8-00
 ```
 
+### 설치된 버전 확인 하기
+마지막으로 설치된 버전을 확인해보겠습니다.
+```
+#  dpkg -l kube*
+Desired=Unknown/Install/Remove/Purge/Hold
+| Status=Not/Inst/Conf-files/Unpacked/halF-conf/Half-inst/trig-aWait/Trig-pend
+|/ Err?=(none)/Reinst-required (Status,Err: uppercase=bad)
+||/ Name                      Version           Architecture      Description
++++-=========================-=================-=================-========================================================
+ii  kubeadm                   1.18.8-00         amd64             Kubernetes Cluster Bootstrapping Tool
+ii  kubectl                   1.18.8-00         amd64             Kubernetes Command Line Tool
+ii  kubelet                   1.18.8-00         amd64             Kubernetes Node Agent
+ii  kubernetes-cni            0.8.7-00          amd64             Kubernetes CNI
+```
+
 # Master에 join하기
 [참고](https://stackoverflow.com/questions/51126164/how-do-i-find-the-join-command-for-kubeadm-on-the-master)와 동일하게 진행합니다.
+
+### master node에서 join 명령어 발급받기
+```
+# kubeadm token create --print-join-command
+```
+
+### worker node에서 join 명령어 수행하기
+신규로 join하려는 worker node에서 위에서 발급받은 명령어를 수행합니다.
+```
+# kubeadm join X.X.X.X:XX --token xxxx --discovery-token-ca-cert-hash sha256:xxxx
+W1113 13:04:14.543859   83613 join.go:346] [preflight] WARNING: JoinControlPane.controlPlane settings will be ignored when control-plane flag is not set.
+[preflight] Running pre-flight checks
+	[WARNING IsDockerSystemdCheck]: detected "cgroupfs" as the Docker cgroup driver. The recommended driver is "systemd". Please follow the guide at https://kubernetes.io/docs/setup/cri/
+[preflight] Reading configuration from the cluster...
+[preflight] FYI: You can look at this config file with 'kubectl -n kube-system get cm kubeadm-config -oyaml'
+[kubelet-start] Downloading configuration for the kubelet from the "kubelet-config-1.18" ConfigMap in the kube-system namespace
+[kubelet-start] Writing kubelet configuration to file "/var/lib/kubelet/config.yaml"
+[kubelet-start] Writing kubelet environment file with flags to file "/var/lib/kubelet/kubeadm-flags.env"
+[kubelet-start] Starting the kubelet
+[kubelet-start] Waiting for the kubelet to perform the TLS Bootstrap...
+
+This node has joined the cluster:
+* Certificate signing request was sent to apiserver and a response was received.
+* The Kubelet was informed of the new secure connection details.
+
+Run 'kubectl get nodes' on the control-plane to see this node join the cluster.
+```
+
+### master node에서 cluster로 join된 것 확인하기
+`STATUS`가 NotReady -> Ready로 변경되는데 시간이 걸릴 수 있습니다.
+```
+# kubectl get nodes
+```

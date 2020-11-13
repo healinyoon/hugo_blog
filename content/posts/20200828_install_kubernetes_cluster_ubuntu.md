@@ -82,6 +82,7 @@ systemctl restart kubelet
 
 ### 3) hostname 등록(모든 node)
 
+이때 주의할 점은 hostname에 알파벳 소문자와 숫자, '-' 기호만 가능하다.
 ```
 # sudo hostnamectl set-hostname master01
 
