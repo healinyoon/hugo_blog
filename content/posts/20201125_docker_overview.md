@@ -67,8 +67,7 @@ Linux는 격리된 작업 공간을 제공하기 위해 `namespace` 라는 기�
 4. ipc(IPC; 프로세스간 통신): 프로세스간의 독립적인 통신 통로 할당
 5. uts(UTS; Unix Timesharing System): 독립적인 hostname 할당
 
-#### PID namespace 밖의 공간(regular namespace)에서도 독립적인 프로세스 확인 가능
-즉 namespace 기능은 같은 공간을 공유하되, **좀 더 제한된 공간**을 할당하는 원리이다. namespace를 통해 독립적인 공간을 할당한 후에는 `nsenter`(namespace enter)라는 명령어를 통해 이미 실행 중인 프로세스의 namespace 공간에 접근할 수 있다.
+PID namespace 밖의 공간(regular namespace)에서도 독립적인 프로세스 확인이 가능하다. 즉 namespace 기능은 같은 공간을 공유하되, **좀 더 제한된 공간**을 할당하는 원리이다. namespace를 통해 독립적인 공간을 할당한 후에는 `nsenter`(namespace enter)라는 명령어를 통해 이미 실행 중인 프로세스의 namespace 공간에 접근할 수 있다.
 
 `nsenter`는 docker의 `exec`와 비슷한 역할을 한다. 다만 `nsenter`는 `exce`와 다르게 cgroups에 들어가지 않기 때문에 리소스 제한의 영향을 받지 않는다.
 
