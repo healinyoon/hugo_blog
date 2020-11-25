@@ -57,7 +57,22 @@ $ docker run -i -t ubuntu /bin/bash
 6. `exit` 명령을 사용하여 container를 빠져나오면 container가 중지되지만 제거되지는 않는다. 다시 시작하거나 제거할 수 있다.
 
 # Container technology
+Docker는 Go 프로그래밍 언어로 작성되었으며, Linux 커널의 여러 기능을 활용하도록 제공한다.
+
+### Namespace
+Linux는 격리된 작업 공간을 제공하기 위해 `namespace` 라는 기능을 커널에 내장하고 있다. 현재 Docker Engine은 Linux에서 다음과 같은 namespace를 사용한다.
+1. mnt(MNT; 파일 시스템 마운트): host 파일 시스템에 구애받지 않고 독립적으로 파일 시스템을 mount or unmount 가능하다. 
+2. pid(PID; 프로세스 ID): 독립적인 프로세스 공간 할당
+3. net(NET; 네트워킹): namespace간의 네트워크 충돌 방지(중복 port 바인딩 등)
+4. ipc(IPC; 프로세스간 통신): 프로세스간의 독립적인 통신 통로 할당
+5. uts(UTS; Unix Timesharing System): 독립적인 hostname 할당
+
+#### PID namespace 밖의 공간(regular namespace)에서도 독립적인 프로세스 확인 가능
+즉 namespace 기능은 같은 공간을 공유하되, **좀 더 제한된 공간**을 할당하는 원리이다. namespace를 통해 독립적인 공간을 할당한 후에는 `nsenter`(namespace enter)라는 명령어를 통해 이미 실행 중인 프로세스의 namespace 공간에 접근할 수 있다.
+
+`nsenter`는 docker의 `exec`와 비슷한 역할을 한다. 다만 `nsenter`는 `exce`와 다르게 cgroups에 들어가지 않기 때문에 리소스 제한의 영향을 받지 않는다.
 
 # 참고
 * https://docs.docker.com/get-started/overview/
 * https://velog.io/@labyu/docker-3
+* https://tech.ssut.me/what-even-is-a-container/
