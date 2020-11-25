@@ -41,7 +41,20 @@ Docker를 사용하면 image, container, network, volume, plugin 및 기타 obje
 Docker container를 만들기 위한 템플릿이다. registry에 존재하는 image를 가져와 사용할 수도 있고, image를 만들고 실행하는데 필요한 단계를 정의하는 `Dockerfile`를 작성하여 고유한 image를 빌드할 수도 있다.
 
 #### Containers
-Docker container는 image의 실행 가능한 인스턴스이다.
+Docker container는 image의 실행 가능한 인스턴스이다. Docker API 또는 CLI를 사용하여 container를 생성, 시작, 중지, 이동 또는 삭제 할 수 있다. container는 image와 사용자가 생성하거나 시작할 때 제공하는 구성 옵션에 의해 정의된다. container가 제거되면 영구 저장소에 저장되지 않은 데이터의 변경 사항들은 함께 제거된다. 
+
+> 예제 `docker run` 명령
+다음 명령어는 `ubuntu` container를 실행하고 container 내부와 대화형 command 창을 연결한다.
+```
+$ docker run -i -t ubuntu /bin/bash
+```
+위의 명령어를 입력하면 다음 절차가 순차적으로 진행된다.
+1. `ubuntu` image가 local에 없는 경우, Docker는 자동으로 `docker pull ubuntu` 명령을 수행하여 registry에서 image를 가져온다.
+2. Docker는 `docker container create` 명령을 수행하여 새로운 container를 생성한다.
+3. Docker는 container layer(Read/Write 가능)를 최종 layer로 container에 할당한다. 이를 통해 실행 중인 container는 container 내부의 로컬 파일 시스템에서 파일과 디렉토리를 읽고 쓰는 것이 가능하다.
+4. 네트워크 옵션을 지정하지 않았으므로, Docker는 container를 기본 네트워크에 연결하는 인터페이스를 만든다. 여기에는 container에 IP 주소를 할당하는 것도 포함된다.
+5. Docker는 container를 시작하고 `/bin/bash` 명령을 실행시킨다. container가 실행중이며 `-i`와 `-t` 옵션을 사용하였기 때문에 container 내부에서 명령 입력이 가능하다.
+6. `exit` 명령을 사용하여 container를 빠져나오면 container가 중지되지만 제거되지는 않는다. 다시 시작하거나 제거할 수 있다.
 
 # Container technology
 

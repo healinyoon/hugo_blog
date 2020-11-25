@@ -74,6 +74,128 @@ Docker image는 Union File System 기반으로 동작한다. Union File Systme�
 
 ![](/images/20201125_docker_image_layer/layers.jpeg)
 
+# Image Layer 디렉토리 파악하기
+
+
+### Image 정보 확인
+nginx image를 다운받아보자.
+* Image pull
+```
+# sudo docker pull nginx
+Using default tag: latest
+latest: Pulling from library/nginx
+852e50cd189d: Already exists
+571d7e852307: Pull complete
+addb10abd9cb: Pull complete
+d20aa7ccdb77: Pull complete
+8b03f1e11359: Pull complete
+Digest: sha256:6b1daa9462046581ac15be20277a7c75476283f969cb3a61c8725ec38d3b01c3
+Status: Downloaded newer image for nginx:latest
+docker.io/library/nginx:latest
+```
+
+* Image 정보 확인
+Image의 정보는 `docker inspect {image}` 명령어로 확인할 수 있다. 
+```
+# docker inspect nginx
+[
+    {
+        "Id": "sha256:bc9a0695f5712dcaaa09a5adc415a3936ccba13fc2587dfd76b1b8aeea3f221c",
+        "RepoTags": [
+            "nginx:latest"
+        ],
+
+(중략)
+```
+
+### Image 저장소 위치 확인
+docker image 저장소 위치는 `docker info` 명령어로 확인할 수 있다.
+```
+# docker info
+Client:
+ Debug Mode: false
+
+Server:
+ Containers: 57
+  Running: 16
+  Paused: 0
+  Stopped: 41
+ Images: 149
+ Server Version: 19.03.13
+ Storage Driver: overlay2
+  Backing Filesystem: extfs
+  Supports d_type: true
+  Native Overlay Diff: false
+ Logging Driver: json-file
+ Cgroup Driver: cgroupfs
+ Plugins:
+  Volume: local
+  Network: bridge host ipvlan macvlan null overlay
+  Log: awslogs fluentd gcplogs gelf journald json-file local logentries splunk syslog
+ Swarm: inactive
+ Runtimes: runc
+ Default Runtime: runc
+ Init Binary: docker-init
+ containerd version: 8fba4e9a7d01810a393d5d25a3621dc101981175
+ runc version: dc9208a3303feef5b3839f4323d9beb36df0a9dd
+ init version: fec3683
+ Security Options:
+  apparmor
+  seccomp
+   Profile: default
+ Kernel Version: 5.4.0-1031-azure
+ Operating System: Ubuntu 18.04.5 LTS
+ OSType: linux
+ Architecture: x86_64
+ CPUs: 2
+ Total Memory: 7.749GiB
+ Name: master
+ ID: 5HUW:6SVP:6Q4Q:LDGN:YMF2:RBDM:VEXF:3UKJ:XVTV:5SRK:SS7R:TPJ2
+ Docker Root Dir: /var/lib/docker
+ Debug Mode: false
+ Registry: https://index.docker.io/v1/
+ Labels:
+ Experimental: false
+ Insecure Registries:
+  127.0.0.0/8
+ Live Restore Enabled: false
+
+WARNING: No swap limit support
+```
+
+### Layer 디렉토리
+* 디렉토리 구조
+Image layer 정보를 확인하기 위한 디렉토리만 살펴보면 다음과 같다.
+```
+/var/lib/docker# tree docker
+.
+docker
+├── containers: docker container 정보를 저장한다.
+├── image: docker image 정보를 저장한다.
+│   └── overlay2
+│       ├── imagedb: imagedb에 대한 정보는 layerdb에 저장된다.
+│       └── layerdb: layerdb에 대한 정보는 overlay2에 저장된다.
+├── overlay2: docker image의 파일 시스템이 저장된다. 실질적으로 image layer 데이터가 저장되는 경로이다.
+│   ├── 0090fbeed32cba3aed09c2459d4a5f59144be127dfed23cbe8c7f47982dd3c12
+│   ├── 014997dffd51a7e9a1418e7f888097c360c592ddb791c0973b35b9935a1eea9d
+``` 
+
+* 각 디렉토리별 용량
+위의 각 경로의 데이터 용량을 조회해보면 다음과 같다. 실제로 docker 데이터가 저장되는 root 경로인 `/var/lib/docker` 디렉토리 데이터 용량과 `/var/lib/docker/overlay2` 디렉토리 데이터 용량이 가장 근접한 것을 볼 수 있다(즉 실질적인 image layer 데이터가 여기에 저장된다는 것).
+```
+# du -sh /var/lib/docker
+9.1G    /var/lib/docker
+
+# du -sh /var/lib/docker/containers/
+39M     /var/lib/docker/containers/
+
+# du -sh /var/lib/docker/image/
+11M     /var/lib/docker/image/
+
+# du -sh /var/lib/docker/overlay2/
+6.0G    /var/lib/docker/overlay2/
+```
+
 # 참고
 * https://docs.docker.com/get-started/overview/
 * https://nirsa.tistory.com/63
