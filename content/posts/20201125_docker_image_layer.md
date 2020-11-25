@@ -24,6 +24,7 @@ ENTRYPOINT ["echo", "hello"]
 ```
 
 Dockerfile을 빌드하면 아래와 같이 각 단계별로 image가 생성되는 것을 확인할 수 있다. 즉 Dockerfile을 빌드하면 Dockerfile의 단계별로 image layer가 생성되며, 이들이 계층적으로 하나씩 쌓이며 image를 이루게 된다.
+
 ```
 $ sudo docker build --tag echo:1.0 .
 Sending build context to Docker daemon  7.168kB
@@ -45,6 +46,7 @@ Successfully tagged echo:1.0
 ![](/images/20201125_docker_image_layer/img-layer.png)
 
 # Container Layer
+
 Image를 빌드한 후 `docker container run` 명령을 수행하면 아래와 같이 가장 마지막에 **container layer**를 생성한다(이 container layer는 container를 삭제하면 같이 삭제 된다).
 
 ![](/images/20201125_docker_image_layer/container-layer.png)
@@ -54,12 +56,14 @@ Image를 빌드한 후 `docker container run` 명령을 수행하면 아래와 �
 # Union FS
 
 ### Union Mount
+
 Union Mount는 복수의 파일 시스템을 하나의 파일 시스템으로 마운트하는 기능으로 두 파일 시스템에서 동일한 파일이 있다면 나중에 마운트 된 파일 시스템의 파일을 Overlay한다. 하위 파일에 대한 쓰기 작업은 CoW(Copy on Write) 전략에  따라 복사본을 생성하여 수행하므로 원본 파일 시스템은 변하지 않는 것이 특징이다.
 
 ![](/images/20201125_docker_image_layer/unionfs.png)
 
 
 ### Docker Image: Union File System 
+
 Docker image는 Union File System 기반으로 동작한다. Union File Systme의 특성에 따라 하위 layer는 읽기 전용이며, CoW 전략에 의해 쓰기 작업은 상위 레이어로 복사해서 이루어지기 때문에 하나의 image로 부터 복수의 container가 실행 가능한 것이다.
 
 * Container Layer
@@ -78,8 +82,11 @@ Docker image는 Union File System 기반으로 동작한다. Union File Systme�
 
 
 ### Image 정보 확인
+
 nginx image를 다운받아보자.
+
 * Image pull
+
 ```
 # sudo docker pull nginx
 Using default tag: latest
@@ -95,7 +102,9 @@ docker.io/library/nginx:latest
 ```
 
 * Image 정보 확인
+
 Image의 정보는 `docker inspect {image}` 명령어로 확인할 수 있다. 
+
 ```
 # docker inspect nginx
 [
@@ -109,7 +118,9 @@ Image의 정보는 `docker inspect {image}` 명령어로 확인할 수 있다.
 ```
 
 ### Image 저장소 위치 확인
+
 docker image 저장소 위치는 `docker info` 명령어로 확인할 수 있다.
+
 ```
 # docker info
 Client:
@@ -164,8 +175,11 @@ WARNING: No swap limit support
 ```
 
 ### Layer 디렉토리
+
 * 디렉토리 구조
+
 Image layer 정보를 확인하기 위한 디렉토리만 살펴보면 다음과 같다.
+
 ```
 /var/lib/docker# tree docker
 .
@@ -181,7 +195,9 @@ docker
 ``` 
 
 * 각 디렉토리별 용량
+
 위의 각 경로의 데이터 용량을 조회해보면 다음과 같다. 실제로 docker 데이터가 저장되는 root 경로인 `/var/lib/docker` 디렉토리 데이터 용량과 `/var/lib/docker/overlay2` 디렉토리 데이터 용량이 가장 근접한 것을 볼 수 있다(즉 실질적인 image layer 데이터가 여기에 저장된다는 것).
+
 ```
 # du -sh /var/lib/docker
 9.1G    /var/lib/docker
@@ -197,6 +213,7 @@ docker
 ```
 
 # 참고
+
 * https://docs.docker.com/get-started/overview/
 * https://nirsa.tistory.com/63
 * https://devaom.tistory.com/5
