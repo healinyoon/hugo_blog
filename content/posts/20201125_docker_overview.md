@@ -45,7 +45,6 @@ Docker container는 image의 실행 가능한 인스턴스이다.
 
 # Container technology
 
-
 # 참고
 * https://docs.docker.com/get-started/overview/
 * https://velog.io/@labyu/docker-3
