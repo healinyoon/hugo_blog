@@ -14,8 +14,6 @@ tags: [
 
 Docker container를 만들기 위한 템플릿이다. registry에 존재하는 image를 가져와 사용할 수도 있고, image를 만들고 실행하는데 필요한 단계를 정의하는 `Dockerfile`를 작성하여 고유한 image를 빌드할 수도 있다. Dockerfile의 각 단계에 정의된 명령어는 image에 layer를 만든다.
 
-## Image Layer
-
 ### Image Layer
 
 앞서 설명한 바와 같이 image는 Dockerfile로 빌드된다. Dockerfile은 다음과 같이 단계별로 구성된다.
