@@ -72,6 +72,15 @@ Linux는 격리된 작업 공간을 제공하기 위해 `namespace` 라는 기�
 
 `nsenter`는 docker의 `exec`와 비슷한 역할을 한다. 다만 `nsenter`는 `exce`와 다르게 cgroups에 들어가지 않기 때문에 리소스 제한의 영향을 받지 않는다.
 
+
+### Cgroups
+자원(resource)에 대한 제어를 가능하게 해주는 Linux 커널 기능이다. Croups은 다음 리소스를 제어할 수 있다.
+* 메모리
+* CPU
+* I/O
+* 네트워크
+* device 노드(/dev/)
+
 # 참고
 * https://docs.docker.com/get-started/overview/
 * https://velog.io/@labyu/docker-3
