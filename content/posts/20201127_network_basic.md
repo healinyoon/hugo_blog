@@ -1,7 +1,7 @@
 ---
 title: "네트워크 용어, 인터페이스 및 프로토콜 기초 이해하기"
 date: 2020-11-27T11:22:24+09:00
-draft: true
+draft: false
 categories: [  
   "networks",
 ]
