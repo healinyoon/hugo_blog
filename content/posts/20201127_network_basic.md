@@ -22,7 +22,7 @@ categories: [
 * Network Interface: 네트워크 하드웨어와 통신하기 위한 네트워크 고유 소프트웨어
 * WAN(Wide Area Network): 광역 통신망
     * 일반적으로 인터넷 전체를 의미 => interface가 WAN에 연결 = 인터넷을 통해 연결 가능하다고 가정
-    * LAN과 LAN 사이를 연결
+    * LAN과 LAN 사이를 연결  
         ![그림 출처: https://ledgku.tistory.com/17](/images/20201127_network_basic/WAN.png)
 * LAN(Local Area Network): 근거리 통신망
     * 가정 또는 회사 네트워크 
