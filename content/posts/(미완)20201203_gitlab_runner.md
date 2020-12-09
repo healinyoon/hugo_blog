@@ -47,3 +47,5 @@ ii  gitlab-runner                              12.2.0                           
 * https://namioto.ip.or.kr/2018/07/16/gitlab-ci%EB%A1%9C-%EC%9E%90%EB%8F%99%EB%B0%B0%ED%8F%AC%ED%95%98%EA%B8%B0/
 
 미완 이유: 프로젝트마다 runner를 매번 register 해줘야 함 -> 관리 포인트 너무 많음
+
+그 외 추가로 **gitlab <-> k8s cluster**는 버전 이슈로 불가 -> [참고](https://gitlab.com/agepoly/it/infra/kubernetes/-/issues/44)
