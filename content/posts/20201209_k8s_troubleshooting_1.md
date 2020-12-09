@@ -55,6 +55,3 @@ namespace "jenkins" deleted
 # kubectl delete pv jenkins2-pv
 persistentvolume "jenkins2-pv" deleted
 ```
- 
-
-여기서 이해가 안되는 건.. helm install이 정상 완료되지 않았는데, k8s resource는 생성이 되어 있었다는 것..
