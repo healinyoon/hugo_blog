@@ -1,5 +1,5 @@
 ---
-title: "Kubernets(쿠버네티스) Troubleshooting (2) - Node가 NotReady됐는데 docker가 죽어있을 때 "
+title: "Kubernets(쿠버네티스) Troubleshooting (2) - Node가 NotReady됐는데 docker가 죽어있을 때"
 date: 2020-12-09T16:11:19+09:00
 draft: false
 categories: [  

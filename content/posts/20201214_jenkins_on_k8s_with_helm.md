@@ -1,0 +1,298 @@
+---
+title: "Kubernetes CI/CD"
+date: 2020-12-14T11:50:39+09:00
+draft: true
+categories: [  
+  "msa",
+  "ci/cd",
+]
+tags: [
+  "docker",
+  "kubernetes",
+  "helm",
+  "jenkins",
+  "gitlab",
+]
+---
+
+# Intro
+Kubernetes CI/CD 구축기
+
+# Helm으로 Jenkins를 Kubernetes에 배포하기
+
+### Persistence Volume을 위한 NFS 서버 구성
+
+* 참고: https://sarc.io/index.php/os/1780-ubuntu-nfs-configuration
+
+이 포스트는 NFS을 `{NFS server}:/mnt/nfs_server`와 `{NFS client(k8s cluster)}:/mnt/nfs_client` 경로를 마운트하여 구성하였다.
+
+### Persistence Volume 생성
+
+1. Persistent Volume으로 마운트할 디렉토리 생성
+
+```
+# mkdir /mnt/nfs_server/pv_jenkins
+# chmod 777 /mnt/nfs_server/pv_jenkins
+```
+
+2. Persistent Volume YAML 작성
+
+> jenkins-pv.yaml
+```
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: jenkins-pv
+spec:
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  nfs:
+    server: {NFS server IP}
+    path: /mnt/nfs_server/pv_jenkins
+```
+
+3. Persistent Volume 생성 및 확인
+
+```
+# kubectl create -f jenkins-pv.yaml
+persistentvolume/jenkins-pv created
+
+# kubectl get pv
+NAME         CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM   STORAGECLASS   REASON   AGE
+jenkins-pv   10Gi       RWO            Retain           Available        
+```
+
+### Jenkins Helm Repo 추가
+
+`stable/jenkins`는 DEPRECATED되었기 때문에 `jenkins/jenkins`를 사용해야 한다.
+
+1. 해당 Repository 접근
+
+[https://github.com/jenkinsci/helm-charts](https://github.com/jenkinsci/helm-charts)
+
+2. Helm Chart Repository 추가 및 조회
+
+```
+# helm repo add jenkins https://charts.jenkins.io
+"jenkins" has been added to your repositories
+
+# helm search repo jenkins
+NAME           	CHART VERSION	APP VERSION	DESCRIPTION
+jenkins/jenkins	3.0.2        	2.249.3    	Jenkins - Build great things at any scale! The ...
+```
+
+`jenkins/jenkins` 가 조회되는 것을 확인할 수 있다.
+
+### Jenkins Helm Chart 커스터마이징
+
+1. Jenkins Helm Chart Values 확인
+
+Jenkins helm chart의 어떤 옵션이 구성 가능한지 `helm show values {helm repo}/{애플리케이션명}` 명령어로 확인한다. 상당히 길게 출력되는데, 우리에게 필요한 옵션을 찾아 적용하면 된다.
+
+```
+# helm show values jenkins/jenkins
+
+# Default values for jenkins.
+# This is a YAML-formatted file.
+# Declare name/value pairs to be passed into your templates.
+# name: value
+
+## Overrides for generated resource names
+# See templates/_helpers.tpl
+# nameOverride:
+# fullnameOverride:
+# namespaceOverride:
+
+# For FQDN resolving of the master service. Change this value to match your existing configuration.
+# ref: https://github.com/kubernetes/dns/blob/master/docs/specification.md
+clusterZone: "cluster.local"
+
+master:
+  httpsKeyStore:
+    jenkinsHttpsJksSecretName: ''
+    enable: false
+    httpPort: 8081
+    path: "/var/jenkins_keystore"
+    fileName: "keystore.jks"
+    password: "password"
+
+(중략)
+```
+
+2. Values 파일 생성
+
+```
+# helm show values jenkins/jenkins > jenkins-values.yaml
+```
+
+3. Values 파일 커스터마이징
+
+위에서 생성한 `jenkins-values.yaml` 파일을 커스터마이징할 옵션은 다음과 같다.
+
+* admin 패스워드 변경
+
+```
+변경 전
+# adminPassword: <defaults to random>
+
+변경 후
+adminPassword: {패스워드}
+```
+
+* serviceType 변경
+
+Service Type을 NodePort로 변경
+
+```
+변경 전
+serviceType: ClusterIP
+
+변경 후
+serviceType: NodePort
+nodePort: {Port}
+```
+
+* storageClass size 변경
+
+위에서 생성한 pv를 사용하기 위해 동일한 조건 기재
+
+```
+변경 전
+persistence:
+  enabled: true
+  existingClaim:
+  storageClass:
+  annotations: {}
+  accessMode: "ReadWriteOnce"
+  size: "8Gi"
+
+변경 후
+persistence:
+  enabled: true
+  existingClaim:
+  storageClass:
+  annotations: {}
+  accessMode: "ReadWriteOnce"
+  size: "10Gi"
+```
+
+* nodeSelector 지정
+
+Jenkins Master는 특정 Node에서 배포되도록 Node Selector 지정
+
+```
+변경 전
+nodeSelector: {}
+
+변경 후
+nodeSelector:
+    kubernetes.io/hostname: "gs-hci-vm-cicd"
+```
+
+* Plugin 목록 제거
+
+컨테이너 초기화에서 플러그인 설치를 주석처리하는 이유는 (Pod STATUS가 Running되지 않고 Error 또는 CrashLoopBackOff을 반복할 때)[]를 참고한다.
+
+```
+변경 전
+installPlugins:
+    - kubernetes:1.27.6
+    - workflow-aggregator:2.6
+    - git:4.4.5
+    - configuration-as-code:1.46
+변경 후
+installPlugins:
+   # - kubernetes:1.27.6
+   # - workflow-aggregator:2.6
+   # - git:4.4.5
+   # - configuration-as-code:1.46
+```
+
+대신 필요한 플러그인을 설치하고 보안 설정도 해줘야 한다.
+
+  - kubernetes
+  - workflow-aggregator
+  - git
+  - configuration-as-code
+
+### Jenkins Helm Install
+
+1. Jenkins Helm 설치
+
+```
+# helm install jenkins -f jenkins-values.yaml jenkins/jenkins --namespace=jenkins
+NAME: jenkins
+LAST DEPLOYED: Wed Dec  9 11:19:15 2020
+NAMESPACE: jenkins
+STATUS: deployed
+REVISION: 1
+NOTES:
+1. Get your 'admin' user password by running:
+  kubectl exec --namespace jenkins -it svc/jenkins -c jenkins -- /bin/cat /run/secrets/chart-admin-password && echo
+2. Get the Jenkins URL to visit by running these commands in the same shell:
+  export NODE_PORT=$(kubectl get --namespace jenkins -o jsonpath="{.spec.ports[0].nodePort}" services jenkins)
+  export NODE_IP=$(kubectl get nodes --namespace jenkins -o jsonpath="{.items[0].status.addresses[0].address}")
+  echo http://$NODE_IP:$NODE_PORT/login
+
+3. Login with the password from step 1 and the username: admin
+4. Configure security realm and authorization strategy
+5. Use Jenkins Configuration as Code by specifying configScripts in your values.yaml file, see documentation: http:///configuration-as-code and examples: https://github.com/jenkinsci/configuration-as-code-plugin/tree/master/demos
+
+For more information on running Jenkins on Kubernetes, visit:
+https://cloud.google.com/solutions/jenkins-on-container-engine
+
+For more information about Jenkins Configuration as Code, visit:
+https://jenkins.io/projects/jcasc/
+
+NOTE: Consider using a custom image with pre-installed plugins
+```
+
+2. Kubernetes Resource 조회
+
+```
+# kubectl get all -n jenkins
+NAME             READY   STATUS    RESTARTS   AGE
+pod/jenkins2-0   2/2     Running   0          6m20s
+
+NAME                     TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+service/jenkins2         NodePort    10.109.131.192   <none>        8080:31133/TCP   178m
+service/jenkins2-agent   ClusterIP   10.99.253.235    <none>        50000/TCP        178m
+
+NAME                        READY   AGE
+statefulset.apps/jenkins2   1/1     178m
+```
+
+한참 기다리면 `Init:0/1 → Running` 으로 변경되는 것 확인
+
+3. 사이트 접속 확인: {k8s cluster IP}:31122
+
+    ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d5aac0f8-28e8-4528-b687-31dc6c101b14/_2020-12-08__5.54.06.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d5aac0f8-28e8-4528-b687-31dc6c101b14/_2020-12-08__5.54.06.png)
+
+
+
+6. pv 정상 동작도 확인
+
+```
+# pwd
+/mnt/nfs_server/pv_jenkins
+
+# ls
+casc_configs                    identity.key.enc                                             jenkins.telemetry.Correlator.xml  plugins                   updates
+config.xml                      jenkins.install.InstallUtil.lastExecVersion                  jobs                              plugins.txt               userContent
+copy_reference_file.log         jenkins.install.UpgradeWizard.state                          logs                              secret.key                users
+hudson.model.UpdateCenter.xml   jenkins.model.JenkinsLocationConfiguration.xml               nodeMonitors.xml                  secret.key.not-so-secret  war
+hudson.plugins.git.GitTool.xml  jenkins.security.apitoken.ApiTokenPropertyConfiguration.xml  nodes                             secrets                   workflow-libs
+```
+
+
+# 참고
+### Helm으로 Jenkins를 Kubernetes에 배포하기
+* https://m.blog.naver.com/alice_k106/221562805601
+* https://velog.io/@hamon/Kubernetes-Cluster%EC%97%90-Jenkins-%EC%84%A4%EC%B9%98%ED%95%98%EA%B8%B0
+
+

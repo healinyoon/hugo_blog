@@ -1,5 +1,5 @@
 ---
-title: "Kubernets(쿠버네티스) Troubleshooting (1) - PV Terminating에서 멈출 때 "
+title: "Kubernets(쿠버네티스) Troubleshooting (1) - PV Terminating에서 멈출 때"
 date: 2020-12-09T10:56:19+09:00
 draft: false
 categories: [  
