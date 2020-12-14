@@ -1,6 +1,6 @@
 ---
 title: "Kubernets(쿠버네티스) Troubleshooting (3) - Pod STATUS가 Running되지 않고 Error 또는 CrashLoopBackOff을 반복할 때"
-date: 2020-12-14T16:11:19+09:00
+date: 2020-12-14T11:50:39+09:00
 draft: false
 categories: [  
   "msa",
