@@ -25,7 +25,44 @@ pod/jenkins-0                                0/2     Init:0/1   0          4m31s
 * [https://kubernetes.io/ko/docs/concepts/workloads/pods/init-containers/](https://kubernetes.io/ko/docs/concepts/workloads/pods/init-containers/)
 * [https://kubernetes.io/ko/docs/tasks/debug-application-cluster/debug-init-containers/](https://kubernetes.io/ko/docs/tasks/debug-application-cluster/debug-init-containers/)
 
-여기서 중요한 포인트는 `Running`이 안되고 `Init:0/1` -> `CrashLoopBackOff` -> `Error`를 반복한다는 것.. 이를 해결하기 위해서 node에 접근해서 container 로그를 확인해봤다.
+```
+# kubectl get all -n jenkins
+NAME             READY   STATUS                 RESTARTS   AGE
+pod/jenkins-0   0/2     Init:CrashLoopBackOff   4          8m45s
+
+```
+
+여기서 중요한 포인트는 `Running`이 안되고 `Init:0/1` -> `CrashLoopBackOff` -> `Error`를 반복한다는 것이다.
+
+`kubectl describe` 명령어로 Event를 확인하면 container init 과정에서 계속 에러가 발생한다.
+```
+# kubectl describe pod jenkins-0 -n jenkins
+Name:         jenkins-0
+Namespace:    jenkins
+Priority:     0
+Node:         gs-hci-vm-cicd/10.231.238.230
+Start Time:   Wed, 09 Dec 2020 20:19:26 +0900
+Labels:       app.kubernetes.io/component=jenkins-controller
+              app.kubernetes.io/instance=jenkins
+              app.kubernetes.io/managed-by=Helm
+              app.kubernetes.io/name=jenkins
+              controller-revision-hash=jenkins-584bd849f4
+              statefulset.kubernetes.io/pod-name=jenkins-0
+
+(중략)
+
+Events:
+  Type     Reason     Age                            From                     Message
+  ----     ------     ----                           ----                     -------
+  Normal   Scheduled  8m51s                          default-scheduler        Successfully assigned jenkins/jenkins-0 to gs-hci-vm-cicd
+  Normal   Started    <invalid> (x4 over <invalid>)  kubelet, gs-hci-vm-cicd  Started container init
+  Warning  BackOff    <invalid> (x7 over <invalid>)  kubelet, gs-hci-vm-cicd  Back-off restarting failed container
+  Normal   Pulling    <invalid> (x5 over <invalid>)  kubelet, gs-hci-vm-cicd  Pulling image "jenkins/jenkins:lts"
+  Normal   Pulled     <invalid> (x5 over <invalid>)  kubelet, gs-hci-vm-cicd  Successfully pulled image "jenkins/jenkins:lts"
+  Normal   Created    <invalid> (x5 over <invalid>)  kubelet, gs-hci-vm-cicd  Created container init
+```
+
+이를 해결하기 위해서 node에 접근해서 container 로그를 확인해봤다.
 
 ```
 # docker logs 0150155f58e9
@@ -70,6 +107,26 @@ installPlugins:
 ```
 # helm upgrade -f jenkins-values.yaml jenkins jenkins/jenkins --namespace=jenkins
 ```
+
+```
+# kubectl get all -n jenkins
+NAME            READY   STATUS    RESTARTS   AGE
+pod/jenkins-0   2/2     Running   0          6m20s
+
+NAME                    TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+service/jenkins         NodePort    10.109.131.192   <none>        8080:31133/TCP   178m
+service/jenkins-agent   ClusterIP   10.99.253.235    <none>        50000/TCP        178m
+
+NAME                       READY   AGE
+statefulset.apps/jenkins   1/1     178m
+```
+
+대신 필요한 플러그인을 설치하고 보안 설정도 해줘야 한다.
+
+- kubernetes
+- workflow-aggregator
+- git
+- configuration-as-code
 
 # 참고
 * https://stackoverflow.com/questions/57790463/cans-initiate-jenkins-using-stable-helm
