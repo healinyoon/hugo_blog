@@ -76,5 +76,8 @@ jenkins-agent    ClusterIP   10.109.207.50    <none>        50000/TCP        6d2
 ![](/images/20201216_k8s_troubleshooting_4/good1.png)
 ![](/images/20201216_k8s_troubleshooting_4/good2.png)
 
+개인적으로 coreDNS의 의의를 절실히 배우게 해준 문제 해결이었다..
 
-
+# 참고
+* https://stackoverflow.com/questions/59931004/kubernetes-jenkins-slave-doesnt-see-master
+* https://github.com/keptn/keptn/issues/226
