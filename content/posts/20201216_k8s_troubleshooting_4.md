@@ -73,7 +73,8 @@ jenkins-agent    ClusterIP   10.109.207.50    <none>        50000/TCP        6d2
 
 이제 아름답게 잘된다..
 
-![](/images/20201214_k8s_ci_cd/good1.png)
-![](/images/20201214_k8s_ci_cd/good2.png)
+![](/images/20201216_k8s_troubleshooting_4/good1.png)
+![](/images/20201216_k8s_troubleshooting_4/good2.png)
+
 
 
