@@ -51,7 +51,7 @@ java.io.IOException: http://x.x.x.x:31122/ provided port:50000 is not reachable
 	at hudson.remoting.Engine.run(Engine.java:518)
 ```
 
-`SEVERE: http://x.x.x.x:31122/ provided port:50000 is not reachable` = 즉 jenkins agent에 연결이 안된다는 것..
+`SEVERE: http://x.x.x.x:31122/ provided port:50000 is not reachable` = **즉 jenkins-agent에 연결이 안된다는 것..**
 
 # 해결 방법
 
