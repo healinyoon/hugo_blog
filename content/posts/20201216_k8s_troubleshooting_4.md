@@ -23,7 +23,7 @@ Jenkins Kubernetes 플러그인을 사용하여 Jenkins Slave Pod를 배포하�
 ![](/images/20201216_k8s_troubleshooting_4/error2.png)
 
 
-Pod가 배포된 노드에서 `docker logs {container name}` 명령어로 컨테이너 로그를 확인해보니 다음과 같은 내용이 출력되었다.
+Pod가 배포된 노드에서 `docker logs {container id}` 명령어로 컨테이너 로그를 확인해보니 다음과 같은 내용이 출력되었다.
 
 ```
 # docker logs 53e57b2202c7
@@ -38,20 +38,20 @@ INFO: Using /home/jenkins/agent/remoting as a remoting work directory
 Dec 16, 2020 8:32:45 AM org.jenkinsci.remoting.engine.WorkDirManager setupLogging
 INFO: Both error and output logs will be printed to /home/jenkins/agent/remoting
 Dec 16, 2020 8:32:46 AM hudson.remoting.jnlp.Main$CuiListener status
-INFO: Locating server among [http://x.x.x.x:31122/]
+INFO: Locating server among [http://{jenkins master ip}:{port}/]
 Dec 16, 2020 8:32:46 AM org.jenkinsci.remoting.engine.JnlpAgentEndpointResolver resolve
 INFO: Remoting server accepts the following protocols: [JNLP4-connect, Ping]
 Dec 16, 2020 8:32:46 AM org.jenkinsci.remoting.engine.JnlpAgentEndpointResolver isPortVisible
 WARNING: Connection refused (Connection refused)
 Dec 16, 2020 8:32:46 AM hudson.remoting.jnlp.Main$CuiListener error
-SEVERE: http://x.x.x.x:31122/ provided port:50000 is not reachable
-java.io.IOException: http://x.x.x.x:31122/ provided port:50000 is not reachable
+SEVERE: http://{jenkins master ip}:{port}/ provided port:50000 is not reachable
+java.io.IOException: http://{jenkins master ip}:{port}/ provided port:50000 is not reachable
 	at org.jenkinsci.remoting.engine.JnlpAgentEndpointResolver.resolve(JnlpAgentEndpointResolver.java:314)
 	at hudson.remoting.Engine.innerRun(Engine.java:693)
 	at hudson.remoting.Engine.run(Engine.java:518)
 ```
 
-`SEVERE: http://x.x.x.x:31122/ provided port:50000 is not reachable` = **즉 jenkins-agent에 연결이 안된다는 것..**
+`SEVERE: http://{jenkins master ip}:{port}/ provided port:50000 is not reachable` = **즉 jenkins-agent에 연결이 안된다는 것..**
 
 # 해결 방법
 
@@ -64,7 +64,7 @@ java.io.IOException: http://x.x.x.x:31122/ provided port:50000 is not reachable
 
 ```
 # kubectl get svc -n jenkins -o wide
-NAME             TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE    SELECTOR
+NAME             TYPE        CLUSTER-IP       EXTERㅋNAL-IP   PORT(S)          AGE    SELECTOR
 jenkins          NodePort    10.107.89.164    <none>        8080:31122/TCP   6d2h   app.kubernetes.io/component=jenkins-controller,app.kubernetes.io/instance=jenkins
 jenkins-agent    ClusterIP   10.109.207.50    <none>        50000/TCP        6d2h   app.kubernetes.io/component=jenkins-controller,app.kubernetes.io/instance=jenkins
 ```

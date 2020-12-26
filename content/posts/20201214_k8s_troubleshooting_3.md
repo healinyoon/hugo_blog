@@ -14,7 +14,7 @@ tags: [
 
 # 이슈
 
-Jenkins를 Helm으로 설치하는 과정에서 이슈가 하나 발생했다. 컨테이너 초기화가 계속 실패했는데, 아래와 같이 `STATUS`가 Running이 되지 않고 CrashLoopBackOff 또는 Error가 되는 것이다. 일단 `Init:0/1`은 '초기화 컨테이너라는 것'인데 자세한 내용은 아래의 공식 문서를 참고하자.
+Jenkins를 Helm으로 설치하는 과정에서 발생한 이슈이다. 컨테이너 초기화가 계속 실패했는데, 아래와 같이 `STATUS`가 Running이 되지 않고 CrashLoopBackOff 또는 Error가 되는 것이다. 일단 `Init:0/1`은 '초기화 컨테이너라는 것'인데 자세한 내용은 아래의 공식 문서를 참고하자.
 
 ```
 # kubectl get all -n jenkins
@@ -40,7 +40,7 @@ pod/jenkins-0   0/2     Init:CrashLoopBackOff   4          8m45s
 Name:         jenkins-0
 Namespace:    jenkins
 Priority:     0
-Node:         gs-hci-vm-cicd/10.231.238.230
+Node:         ringu/x.x.x.x
 Start Time:   Wed, 09 Dec 2020 20:19:26 +0900
 Labels:       app.kubernetes.io/component=jenkins-controller
               app.kubernetes.io/instance=jenkins
@@ -52,14 +52,14 @@ Labels:       app.kubernetes.io/component=jenkins-controller
 (중략)
 
 Events:
-  Type     Reason     Age                            From                     Message
-  ----     ------     ----                           ----                     -------
-  Normal   Scheduled  8m51s                          default-scheduler        Successfully assigned jenkins/jenkins-0 to gs-hci-vm-cicd
-  Normal   Started    <invalid> (x4 over <invalid>)  kubelet, gs-hci-vm-cicd  Started container init
-  Warning  BackOff    <invalid> (x7 over <invalid>)  kubelet, gs-hci-vm-cicd  Back-off restarting failed container
-  Normal   Pulling    <invalid> (x5 over <invalid>)  kubelet, gs-hci-vm-cicd  Pulling image "jenkins/jenkins:lts"
-  Normal   Pulled     <invalid> (x5 over <invalid>)  kubelet, gs-hci-vm-cicd  Successfully pulled image "jenkins/jenkins:lts"
-  Normal   Created    <invalid> (x5 over <invalid>)  kubelet, gs-hci-vm-cicd  Created container init
+  Type     Reason     Age                            From                Message
+  ----     ------     ----                           ----                -------
+  Normal   Scheduled  8m51s                          default-scheduler   Successfully assigned jenkins/jenkins-0 to ringu
+  Normal   Started    <invalid> (x4 over <invalid>)  kubelet, ringu      Started container init
+  Warning  BackOff    <invalid> (x7 over <invalid>)  kubelet, ringu      Back-off restarting failed container
+  Normal   Pulling    <invalid> (x5 over <invalid>)  kubelet, ringu      Pulling image "jenkins/jenkins:lts"
+  Normal   Pulled     <invalid> (x5 over <invalid>)  kubelet, ringu      Successfully pulled image "jenkins/jenkins:lts"
+  Normal   Created    <invalid> (x5 over <invalid>)  kubelet, ringu      Created container init
 ```
 
 이를 해결하기 위해서 node에 접근해서 container 로그를 확인해봤다.
@@ -114,7 +114,7 @@ NAME            READY   STATUS    RESTARTS   AGE
 pod/jenkins-0   2/2     Running   0          6m20s
 
 NAME                    TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
-service/jenkins         NodePort    10.109.131.192   <none>        8080:31133/TCP   178m
+service/jenkins         NodePort    10.109.131.192   <none>        8080:8080/TCP   178m
 service/jenkins-agent   ClusterIP   10.99.253.235    <none>        50000/TCP        178m
 
 NAME                       READY   AGE
